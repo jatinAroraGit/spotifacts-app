@@ -1,7 +1,14 @@
+import { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  useEffect(() => {
+    const queryString = window.location.search;
+    const URLparams = new URLSearchParams(queryString);
+    const accessToken = URLparams.get('access_token');
+    const refreshToken = URLparams.get('refresh_token');
+  }, [])
   return (
     <div className="App">
       <header className="App-header">
@@ -11,11 +18,11 @@ function App() {
         </p>
         <a
           className="App-link"
-          href="https://reactjs.org"
+          href="http://localhost:3100/login"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Log in to Spotify
         </a>
       </header>
     </div>
