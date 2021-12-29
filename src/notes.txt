@@ -1,0 +1,18 @@
+spotify green hex code : 1db954
+
+
+ <StyledLoginContainer>
+      <h2 style={{ margin: 2 }}>Get Your Spotify Facts Straight !</h2>
+      <StyledImageView src={mainLogo} ></StyledImageView>
+
+      <StyledLoginButton href="http://localhost:3100/login">
+        Log in to Spotify
+    </StyledLoginButton>
+      {showInfo ? (<div style={{ width: 400, position: "absolute", background: "#1db954", borderRadius: 20, padding: 25, transition: "width 1s, height 1s, background-color .5s, transform 1s" }}>
+        <h3>Spotifacts connects to your Spotify account to give you a summary and analyze your listening habits. We provide you with your playlists with songs catgorized into diffrent genres and themes. Additionaly, we also provide you with recommendations for songs that should be on your radar. A spotify Premium Account is required to use Spotifacts We do not retain or copy any of your infromation. Everything is secure and private.</h3>
+        <button color="#1db954" onClick={() => setShowInfo(false)}>Close</button></div>) : (
+          <div>
+            <button onClick={() => setShowInfo(true)} style={{ margin: 20 }}>What we do ?</button>
+          </div>
+        )}
+    </StyledLoginContainer>
