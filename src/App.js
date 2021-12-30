@@ -4,7 +4,9 @@ import styled, { createGlobalStyle } from 'styled-components/macro';
 import { GlobalStyle } from './styles';
 import { accessToken, logout, getCurrentUserProfile } from './spotify';
 import { catchErrors } from './utils';
-import { Login } from './pages';
+import { Login, Profile } from './pages';
+import mainLogo from './images/spotifactsLogo.png';
+
 import {
   BrowserRouter as Router,
   Route,
@@ -12,6 +14,39 @@ import {
   Routes,
   useLocation
 } from "react-router-dom";
+
+const StyledLogoutButton = styled.button`
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: rgba(0,0,0,.7);
+  color: var(--white);
+  font-size: var(--fz-sm);
+  font-weight: 700;
+  border-radius: var(--border-radius-pill);
+  z-index: 10;
+  @media (min-width: 768px) {
+    right: var(--spacing-lg);
+  }
+`;
+
+const StyledHeaderLogo = styled.img`
+width: 80px;
+height: 80px;
+  position: absolute;
+  top: var(--spacing-sm)+100;
+  left: var(--spacing-md);
+  padding: 0px;
+  margin: 0px;
+  color: var(--white);
+  z-index: 10;
+
+  @media (min-width: 768px) {
+    right: var(--spacing-lg);
+  }
+`;
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -48,46 +83,28 @@ function App() {
         {!token ? (
           <Login />
         ) : (
+            <>
+              <StyledHeaderLogo src={mainLogo}></StyledHeaderLogo>
+              <StyledLogoutButton onClick={logout}>Log Out</StyledLogoutButton>
+              <Router>
+                <ScrollToTop />
+                <Routes>
+                  <Route element={<h1>Top Artists</h1>} path="/top-artists">
 
-            <Router>
-              <ScrollToTop />
-              <Routes>
-                <Route element={<h1>Top Artists</h1>} path="/top-artists">
+                  </Route>
+                  <Route element={<h1>Top Tracks</h1>} path="/top-tracks">
+                  </Route>
 
-                </Route>
-                <Route element={<h1>Top Tracks</h1>} path="/top-tracks">
-                </Route>
+                  <Route element={<h1>Playlist with ID</h1>} path="/playlists/:id">
+                  </Route>
 
-                <Route element={<h1>Playlist with ID</h1>} path="/playlists/:id">
-                </Route>
-
-                <Route element={<h1>Playlists</h1>} path="/playlists">
-                </Route>
-                <Route path="/" element={
-                  <div>
-                    <h1>User Info Page</h1>
-                    <button onClick={logout}>Log Out</button>
-                  </div>
-                }>
-                  {/*
-                  <>
-                    <button onClick={logout}>Log Out</button>
-
-                    {profile && (
-                      <div>
-                        <h1>{profile.display_name}</h1>
-                        <p>{profile.followers.total} Followers</p>
-                        {profile.images.length && profile.images[0].url && (
-                          <img src={profile.images[0].url} alt="Avatar" />
-                        )}
-                      </div>
-                    )}
-                  </>
-                  */}
-                </Route>
-              </Routes>
-            </Router>
-
+                  <Route element={<h1>Playlists</h1>} path="/playlists">
+                  </Route>
+                  <Route path="/" element={<Profile />}>
+                  </Route>
+                </Routes>
+              </Router>
+            </>
           )}
       </header>
     </div>
