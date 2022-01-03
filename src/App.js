@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import logo from "./logo.svg";
-import styled, { createGlobalStyle } from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import { GlobalStyle } from './styles';
-import { accessToken, logout, getCurrentUserProfile } from './spotify';
+import { accessToken, logout, getCurrentUserProfile, getDemoMode } from './spotify';
 import { catchErrors } from './utils';
-import { Login, Profile } from './pages';
+import { Login, Profile, TopArtists, TopTracks, Playlists, Playlist } from './pages';
 import mainLogo from './images/spotifactsLogo.png';
+import demoLogo from './images/demoLogoSpotifacts.png';
 
 import {
   BrowserRouter as Router,
   Route,
-  Link,
   Routes,
-  useLocation
+  Link,
+  useLocation,
 } from "react-router-dom";
 
 const StyledLogoutButton = styled.button`
@@ -32,8 +32,8 @@ const StyledLogoutButton = styled.button`
 `;
 
 const StyledHeaderLogo = styled.img`
-width: 80px;
-height: 80px;
+width: 60px;
+height: 60px;
   position: absolute;
   top: var(--spacing-sm)+100;
   left: var(--spacing-md);
@@ -41,7 +41,6 @@ height: 80px;
   margin: 0px;
   color: var(--white);
   z-index: 10;
-
   @media (min-width: 768px) {
     right: var(--spacing-lg);
   }
@@ -61,15 +60,20 @@ function ScrollToTop() {
 function App() {
   const [token, setToken] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [demo, setDemo] = useState(false);
 
   useEffect(() => {
+
     setToken(accessToken);
-    console.log(accessToken);
     const fetchData = async () => {
 
-      const { data } = await getCurrentUserProfile();
-      console.log(data);
-      setProfile(data);
+      let isDemoMode = await getDemoMode();
+      setDemo(isDemoMode);
+      if (isDemoMode === false) {
+        const { data } = await getCurrentUserProfile();
+        setProfile(data);
+      }
+
     }
 
     catchErrors(fetchData());
@@ -80,19 +84,23 @@ function App() {
     <div className="App">
       <GlobalStyle />
       <header className="App-header">
-        {!token ? (
+        {/**
+        {!token  ? (
           <Login />
         ) : (
             <>
-              <StyledHeaderLogo src={mainLogo}></StyledHeaderLogo>
+
               <StyledLogoutButton onClick={logout}>Log Out</StyledLogoutButton>
               <Router>
+                <Link to='/'>
+                  <StyledHeaderLogo src={mainLogo}></StyledHeaderLogo>
+                </Link>
                 <ScrollToTop />
                 <Routes>
-                  <Route element={<h1>Top Artists</h1>} path="/top-artists">
+                  <Route element={<TopArtists />} path="/top-artists">
 
                   </Route>
-                  <Route element={<h1>Top Tracks</h1>} path="/top-tracks">
+                  <Route element={<TopTracks />} path="/top-tracks">
                   </Route>
 
                   <Route element={<h1>Playlist with ID</h1>} path="/playlists/:id">
@@ -100,12 +108,69 @@ function App() {
 
                   <Route element={<h1>Playlists</h1>} path="/playlists">
                   </Route>
-                  <Route path="/" element={<Profile />}>
+                  <Route path="/" element={<Profile demoMode={isDemoMode} />}>
                   </Route>
                 </Routes>
               </Router>
             </>
           )}
+          ****/}
+        {!token && !demo && <Login />}
+        {token &&
+          <>
+
+            <StyledLogoutButton onClick={logout}>Log Out</StyledLogoutButton>
+            <Router>
+              <Link to='/'>
+                <StyledHeaderLogo src={mainLogo}></StyledHeaderLogo>
+              </Link>
+              <ScrollToTop />
+              <Routes>
+                <Route element={<TopArtists />} path="/top-artists">
+
+                </Route>
+                <Route element={<TopTracks />} path="/top-tracks">
+                </Route>
+
+                <Route element={<Playlist />} path="/playlists/:id">
+                </Route>
+
+                <Route element={<Playlists />} path="/playlists">
+                </Route>
+                <Route path="/" element={<Profile />}>
+                </Route>
+              </Routes>
+            </Router>
+          </>
+        }
+        {demo &&
+
+          <>
+
+            <StyledLogoutButton onClick={logout}>Exit Demo</StyledLogoutButton>
+            <Router>
+              <Link to='/'>
+                <StyledHeaderLogo src={demoLogo}></StyledHeaderLogo>
+              </Link>
+              <ScrollToTop />
+              <Routes>
+                <Route element={<TopArtists demoMode={demo} />} path="/top-artists">
+
+                </Route>
+                <Route element={<TopTracks demoMode={demo} />} path="/top-tracks">
+                </Route>
+
+                <Route element={<Playlist demoMode={demo} />} path="/playlists/:id">
+                </Route>
+
+                <Route element={<Playlists demoMode={demo} />} path="/playlists">
+                </Route>
+                <Route path="/" element={<Profile demoMode={demo} />}>
+                </Route>
+              </Routes>
+            </Router>
+          </>
+        }
       </header>
     </div>
   );

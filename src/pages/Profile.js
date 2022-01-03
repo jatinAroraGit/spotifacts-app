@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { catchErrors } from '../utils';
 import { getCurrentUserProfile, getCurrentUserPlaylists, getTopArtists, getTopTracks } from '../spotify';
 import { StyledHeader } from '../styles/index'
-import { SectionWrapper, ArtistsGrid, TrackList, PlaylistsGrid } from '../components/index'
-const Profile = () => {
+import { SectionWrapper, ArtistsGrid, TrackList, PlaylistsGrid, Loader } from '../components'
+import { demoProfile, demoTopArtists, demoTopTracks, demoPlaylists } from '../demo'
+const Profile = (props) => {
   const [profile, setProfile] = useState(null);
   const [playlists, setPlaylists] = useState(null);
   const [topArtists, setTopArtists] = useState(null);
@@ -11,19 +12,26 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const userProfile = await getCurrentUserProfile();
-      setProfile(userProfile.data);
-      console.log(userProfile.data);
+      if (!(props.demoMode)) {
+        const userProfile = await getCurrentUserProfile();
+        setProfile(userProfile.data);
 
-      const userPlaylists = await getCurrentUserPlaylists();
-      setPlaylists(userPlaylists.data);
+        const userPlaylists = await getCurrentUserPlaylists();
+        setPlaylists(userPlaylists.data);
 
-      const userTopArtists = await getTopArtists();
-      setTopArtists(userTopArtists.data);
+        const userTopArtists = await getTopArtists();
+        setTopArtists(userTopArtists.data);
 
-      const userTopTracks = await getTopTracks();
-      setTopTracks(userTopTracks.data);
-      console.log(userTopTracks.data);
+        const userTopTracks = await getTopTracks();
+        setTopTracks(userTopTracks.data);
+
+      }
+      else {
+        setProfile(demoProfile);
+        setTopArtists(demoTopArtists);
+        setTopTracks(demoTopTracks);
+        setPlaylists(demoPlaylists);
+      }
     };
 
 
@@ -55,7 +63,7 @@ const Profile = () => {
             </div>
           </StyledHeader>
 
-          {topArtists && topTracks && playlists && (
+          {topArtists && topTracks && playlists ? (
             <main>
               <SectionWrapper title="Top artists this month" seeAllLink="/top-artists">
                 <ArtistsGrid artists={topArtists.items.slice(0, 10)} />
@@ -66,10 +74,12 @@ const Profile = () => {
               </SectionWrapper>
 
               <SectionWrapper title="Playlists" seeAllLink="/playlists">
-                <PlaylistsGrid playlists={playlists.items.slice(0, 10)} />
+                <PlaylistsGrid playlists={playlists.items.slice(0, 10)} demoMode={props.demoMode} />
               </SectionWrapper>
             </main>
-          )}
+          ) : (
+              <Loader />
+            )}
 
         </>
       )}
