@@ -121,7 +121,6 @@ const Login = () => {
         <div
           style={{
             width: 320,
-            height: window.screen.height - 300,
             position: "absolute",
             background: "#1db954",
             borderRadius: 20,
