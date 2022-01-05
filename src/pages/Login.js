@@ -74,15 +74,6 @@ const StyledLink = styled.a`
   margin:4px;
 `;
 
-const StyledDetailsDiv = styled.div`
- width: 340;
-            
-            position: absolute;
-            background: #1db954;
-            border-radius: 20%;
-            padding: 25px;
-transition: width 1s, height 1s, background-color .5s, transform 1s;
-`
 
 const StyledCenteredDiv = styled.div`
 display: flex;
@@ -102,8 +93,6 @@ const Login = () => {
     process.env.NODE_ENV !== 'production'
       ? 'http://localhost:3100/login'
       : 'https://spotifacts-api.deta.dev/login';
-
-  console.log('Running On', process.env.NODE_ENV);
 
   return (
     <StyledLoginContainer>
@@ -137,15 +126,17 @@ const Login = () => {
           }}
         >
           <h4> What Spotifacts Does </h4>
-          <p>Spotifacts connects to your Spotify account to give you a summary
+          <p>Spotifacts connects to your Spotify account to give you a detailed summary of your profile
           and analyze your listening habits. We provide you with your
-          playlists with songs catgorized into diffrent genres and themes.
-          Additionaly, we also provide you with recommendations for songs that
-          should be on your radar.
+          playlists  catgorized into diffrent genres and themes.
+          
           </p>
           <p>
             A Spotify  Account is required to
-            use Spotifacts or you can try the demo. Spotifacts does not retain or copy any of your infromation from Spotify.
+            use Spotifacts or you can try the demo. 
+            </p>
+            <p>
+            Spotifacts does not retain or copy any of your infromation from Spotify.
             Everything is kept secure and private.{" "}
           </p>
           <StyledCenteredDiv>
