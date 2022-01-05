@@ -126,18 +126,18 @@ function App() {
               </Link>
               <ScrollToTop />
               <Routes>
-                <Route element={<TopArtists />} path="/top-artists">
+                <Route element={<TopArtists demoMode={false} />} path="/top-artists">
 
                 </Route>
-                <Route element={<TopTracks />} path="/top-tracks">
+                <Route element={<TopTracks demoMode={false} />} path="/top-tracks">
                 </Route>
 
-                <Route element={<Playlist />} path="/playlists/:id">
+                <Route element={<Playlist demoMode={false} />} path="/playlists/:id">
                 </Route>
 
-                <Route element={<Playlists />} path="/playlists">
+                <Route element={<Playlists demoMode={false} />} path="/playlists">
                 </Route>
-                <Route path="/" element={<Profile />}>
+                <Route path="/" element={<Profile demoMode={false} />}>
                 </Route>
               </Routes>
             </Router>
