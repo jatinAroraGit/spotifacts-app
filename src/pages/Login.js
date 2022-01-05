@@ -98,12 +98,19 @@ const Login = () => {
     window.location = window.location.origin;
   };
 
+  const LOGIN_URI =
+    process.env.NODE_ENV !== 'production'
+      ? 'http://localhost:3100/login'
+      : 'https://spotifacts-api.deta.dev/login';
+
+  console.log('Running On', process.env.NODE_ENV);
+
   return (
     <StyledLoginContainer>
       <h2 style={{ margin: 2 }}>Get Your Spotify Facts Straight !</h2>
       <StyledImageView src={mainLogo}></StyledImageView>
 
-      <StyledLoginButton href="http://localhost:3100/login">
+      <StyledLoginButton href={LOGIN_URI}>
         Log in to Spotify
       </StyledLoginButton>
       <p style={{ margin: 0, marginTop: 30 }}>Do not have a Spotify Account? </p>
