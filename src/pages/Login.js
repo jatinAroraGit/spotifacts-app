@@ -92,14 +92,14 @@ const Login = () => {
   const LOGIN_URI =
     process.env.NODE_ENV !== 'production'
       ? 'http://localhost:3100/login'
-      : 'https://spotifactsapi-2-w8716286.deta.app/login';
+      : 'https://spotifactsapi-1-w8716286.deta.app/login';
 
   return (
     <StyledLoginContainer>
       <h2 style={{ margin: 2 }}>Get Your Spotify Facts Straight !</h2>
       <StyledImageView src={mainLogo}></StyledImageView>
 
-      <StyledLoginButton href={"https://spotifactsapi-2-w8716286.deta.app/login"}>
+      <StyledLoginButton href={LOGIN_URI}>
         Log in to Spotify
       </StyledLoginButton>
       <p style={{ margin: 0, marginTop: 30 }}>Do not have a Spotify Account? </p>
